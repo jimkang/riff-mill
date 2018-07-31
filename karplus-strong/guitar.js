@@ -27,19 +27,18 @@ Guitar.C_MAJOR = [-1, 3, 2, 0, 0, 0];
 Guitar.G_MAJOR = [3, 2, 0, 0, 0, 3];
 Guitar.A_MINOR = [0, 0, 2, 2, 0, 0];
 Guitar.E_MINOR = [0, 2, 2, 0, 3, 0];
+Guitar.E_POWER = [0, 2];
+Guitar.B_flat_POWER = [6, 8, 8];
 
 // to add a class method in JavaScript,
 // we add a function property to the class's 'prototype' property
 Guitar.prototype.strumChord = function(time, downstroke, velocity, chord) {
-  var pluckOrder;
-  if (downstroke === true) {
-    pluckOrder = [0, 1, 2, 3, 4, 5];
-  } else {
-    pluckOrder = [5, 4, 3, 2, 1, 0];
-  }
+  for (var i = 0; i < chord.length; i++) {
+    let stringNumber = chord.length - 1 - i;
+    if (downstroke) {
+      stringNumber = i;
+    }
 
-  for (var i = 0; i < 6; i++) {
-    var stringNumber = pluckOrder[i];
     if (chord[stringNumber] != -1) {
       this.strings[stringNumber].pluck(time, velocity, chord[stringNumber]);
     }

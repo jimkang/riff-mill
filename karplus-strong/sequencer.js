@@ -1,9 +1,11 @@
 var Guitar = require('./guitar');
+var probable = require('probable');
 
 // this was derived experimentally to match Andre Michelle's
 // I've no idea how it works out as this...
 // it doesn't seem to appear in the ActionScript code anywhere...
-var timeUnit = 0.12;
+var timeUnit = 0.06;
+// var timeUnit = 0.12;
 
 // Create sound samples for the current part of the strum sequence,
 // and queue generation of sound samples of the following part.
@@ -19,7 +21,8 @@ function queueStrums(
   chordIndex,
   precacheTime
 ) {
-  var chords = [Guitar.C_MAJOR, Guitar.G_MAJOR, Guitar.A_MINOR, Guitar.E_MINOR];
+  // var chords = [Guitar.C_MAJOR, Guitar.G_MAJOR, Guitar.A_MINOR, Guitar.E_MINOR];
+  var chords = [Guitar.E_POWER, Guitar.B_flat_POWER, Guitar.A_MINOR];
 
   // var playState = document.getElementById('playState').value;
   // if (playState == 'stopped') {
@@ -28,7 +31,7 @@ function queueStrums(
 
   var curStrumStartTime;
 
-  var chord = chords[chordIndex];
+  var chord = probable.pickFromArray(chords);
   switch (sequenceN % 13) {
   case 0:
     curStrumStartTime = blockStartTime + timeUnit * 0;
@@ -80,10 +83,10 @@ function queueStrums(
     break;
   case 12:
     curStrumStartTime = blockStartTime + timeUnit * 31;
-    guitar.strings[2].pluck(curStrumStartTime, 0.7, chord[2]);
+    guitar.strings[2].pluck(curStrumStartTime, 0.7, chord[1]);
 
     curStrumStartTime = blockStartTime + timeUnit * 31.5;
-    guitar.strings[1].pluck(curStrumStartTime, 0.7, chord[1]);
+    guitar.strings[1].pluck(curStrumStartTime, 0.7, chord[0]);
 
     chordIndex = (chordIndex + 1) % 4;
     blockStartTime += timeUnit * 32;
